@@ -2,9 +2,7 @@ import mongoose from "mongoose";
 import { faker } from '@faker-js/faker';
 import Books from './model/Books.js'
 import Author from './model/Authors.js'
-import BookEmb from './model/BookEmbeded.js'
 import User from './model/Users.js'
-
 
 // Function to generate random date within a range
 const randomDate = (start, end) => {
@@ -18,7 +16,7 @@ const generateTestData = async () => {
     mongoose.connect("mongodb+srv://anamRehman:Ana43210@cluster0.4eza73e.mongodb.net/bookFinder")
 
     // Clear existing data
-    //await Promise.all([Author.deleteMany(), User.deleteMany(), Books.deleteMany(), BookEmb.deleteMany()]);
+    await Promise.all([Author.deleteMany(), User.deleteMany(), Books.deleteMany(), BookEmb.deleteMany()]);
 
     // Generate Authors
     const authors = [];
@@ -45,40 +43,28 @@ const generateTestData = async () => {
       console.log(`New user - ${user.firstname} - has been created.`)
     }
 
-    // Generate Books with Reference
+    // Generate Books with Reference to Authors and Users
     const books = [];
     for (let i = 0; i < 50; i++) {
+      const author = authors[Math.floor(Math.random() * authors.length)];
+      const user = users[Math.floor(Math.random() * users.length)];
+
       const book = new Books({
         title: faker.lorem.words(),
-        author: authors[Math.floor(Math.random() * authors.length)],
+        author: author._id, // Reference to an author
         genre: faker.music.genre(),
         publicationDate: faker.date.past(),
+        ratings: [
+          {
+            user: user._id, // Reference to a user
+            rating: faker.number.int({ min: 1, max: 5 })
+          }
+        ]
       });
       await book.save();
       books.push(book);
-      console.log(`New book - ${book.title} - has been created.`)
+      console.log(`New book - ${book.title} - has been created.`);
     }
-
-    // Generate Books with Embedding
-    const booksEmb = [];
-    for (let i = 0; i < 50; i++) {
-      const book = new BookEmb({
-        title: faker.lorem.words(),
-        author: {
-          _id: authors[Math.floor(Math.random() * authors.length)]._id,
-          name: faker.internet.userName()
-        },
-        genre: faker.music.genre(),
-        publicationDate: faker.date.past(),
-        ratings: [{
-          _id: users[Math.floor(Math.random() * users.length)]._id,
-          rating: faker.number.int({ min: 1, max: 5 })
-        }]
-      });
-      await book.save();
-      booksEmb.push(book);
-    }
-
     console.log('Test data generated successfully.');
     mongoose.connection.close();
   } catch (err) {

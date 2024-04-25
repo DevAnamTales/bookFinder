@@ -10,56 +10,65 @@ export default function users(server, mongoose) {
     try {
       response.status(200).json(await User.find());  // Använder Mongoose's "find"-metod för att hämta alla "users".
     } catch (error) {
-      response.status(500).json({ message: "Något gick fel", error: error })
+      response.status(500).json({ message: "Something went wrong", error: error })
     }
   });
 
   server.get('/api/users/:id', async (request, response) => {
     try {
-      const user = await User.findById(request.params.id)
+      const userId = request.params.id;
 
-      response.status(200).json({ message: "Du försöker hämta 1 användare", user: user })
+      // Check if the userId is a valid ObjectId
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return response.status(400).json({ message: "Bad Request: Invalid user ID" });
+      }
+
+      const user = await User.findById(userId);
+
+      // Check if the user is not found
+      if (!user) {
+        return response.status(404).json({ message: "Not Found: User not found" });
+      }
+
+      response.status(200).json({ message: "User retrieved successfully", user: user });
     } catch (error) {
-      response.status(500).json({ message: "Något gick fel", error: error })
+      response.status(500).json({ message: "Something went wrong", error: error });
     }
-  })
+  });
+
 
   server.post('/api/users', async (request, response) => {
     try {
-      const username = request.body.username
-      const password = request.body.password
+      const firstname = request.body.firstname
+      const lastname = request.body.lastname
 
-      console.log(username + " - username")
-      console.log(typeof username + " - username typeof")
-      console.log(username.length + " - username length")
-      console.log(password + " - password")
-      console.log(typeof password + " - password typeof")
-      console.log(password.length + " - password length")
+      console.log("Creating a user : " + firstname + lastname)
+     
 
-      if (username.length <= 0 || password.length <= 0) {
-        response.status(400).json({ message: "Body måste innehålla username och password som består av minst 1 karaktär" })
+      if (firstname.length <= 0 || lastname.length <=0) {
+        response.status(400).json({ message: "Body must contain firstname, lastname with minimum 1 char" })
       }
 
       const newUser = new User({
-        username: username,
-        password: password
+        firstname: firstname,
+        lastname: lastname
       })
       const savedUser = await newUser.save()
 
-      response.status(201).json({ message: "Du försöker skapa en ny användare!", newUser: newUser, savedUser: savedUser })
+      response.status(201).json({ message: "You are trying to create a user!", newUser: newUser, savedUser: savedUser })
     } catch (error) {
-      response.status(500).json({ message: "Något gick fel", error: error })
+      response.status(500).json({ message: "Something went wrong", error: error })
     }
-  })
+  });
 
   server.put("/api/users/:id", async (request, response) => {
     try {
-      const updateUser = await User.findByIdAndUpdate(request.params.id, request.body)
+      const updateUser = await User.findByIdAndUpdate(request.params.id, request.body, { new: true })
 
       response.json({ updatedUser: updateUser })
 
     } catch (error) {
-      response.status(500).json({ message: "Något gick fel", error: error })
+      response.status(500).json({ message: "something went wrong", error: error })
     }
   })
 
@@ -70,7 +79,7 @@ export default function users(server, mongoose) {
       response.json({ deletedUser: deletedUser })
 
     } catch (error) {
-      response.status(500).json({ message: "Något gick fel", error: error })
+      response.status(500).json({ message: "something went wrong", error: error })
     }
   })
 
