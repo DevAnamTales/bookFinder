@@ -6,8 +6,10 @@ A book finder API designed for user convenience. Users can easily search for boo
 
 ## Authentication: 
 The user need to be authorised with API key to interact with API when adding, updating or deleting the content in the database. For all the GET requests user do not need api key.Add following information in header before sending the PUT, POST and DELETE requests.
-## Headers                ## Key values
-  api-key                    jhjastA545889askKlL-Key
+
+## Headers                
+#Key : api-key
+#value : "jhjastA545889askKlL-Key"
 
 ## Endpoint Structure:
 
