@@ -8,6 +8,7 @@ npm install
 ```
 - Generate test data
   To create a test data run a generateTestData script with following command
+  
   ```http
 node generateTestData.js
 
