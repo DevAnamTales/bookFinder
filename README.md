@@ -13,7 +13,7 @@ npm install
 node generateTestData.js
 
 You will be prompt with question:
-Enter the amount of test data (number): 50
+'Enter the amount of test data (number): 50'
 If you enter 50 in above example, it will create 50 users, authers and books in the mongoDB with reference.
 ```
 
