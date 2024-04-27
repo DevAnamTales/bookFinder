@@ -1,8 +1,24 @@
-API documentation
+###API documentation
+## Project Setup:
+- Clone project and Install all the dependencies
+Clone the repository, in the terminal run the following command
+
+```http
+npm install
+```
+- Generate test data
+  To create a test data run a generateTestData script with following command
+  ```http
+node generateTestData.js
+
+You will be prompt with question:
+Enter the amount of test data (number): 50
+If you enter 50 in above example, it will create 50 users, authers and books in the mongoDB with reference.
+```
 
 ## Overview:
 
-A book finder API designed for user convenience. Users can easily search for books based on various parameters like title, author, genre, publication date and along this gives information about book and it's ratings.
+A book finder API designed for user convenience. Users can easily search for books based on various parameters like title, author, genre, publication date. You can also fetch the books based on the ratings given by the different users.
 
 ## Authentication: 
 
