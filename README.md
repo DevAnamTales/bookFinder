@@ -19,7 +19,8 @@ Enter the amount of test data (number): 50
 If you enter 50 in above example, it will create 50 users, authers and books in the mongoDB with reference.
 ```
 - Run the server
-  RUn the server with following command
+  
+  Run the server with following command
   
 ´´´js
 node server.js
