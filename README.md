@@ -1,4 +1,5 @@
-###API documentation
+#API documentation
+
 ## Project Setup:
 - Clone project and Install all the dependencies
 Clone the repository, in the terminal run the following command
@@ -17,7 +18,14 @@ You will be prompt with a question:
 Enter the amount of test data (number): 50
 If you enter 50 in above example, it will create 50 users, authers and books in the mongoDB with reference.
 ```
-
+- Run the server
+  RUn the server with following command
+  
+´´´js
+node server.js
+´´´
+- Test the API call in browser or importing postman collections. You mighe be need to change the data in the requets in order to see the response since the test data I am using in my postman resides on my local computer. Use your test data that you have created in API calls.
+- 
 ## Overview:
 
 A book finder API designed for user convenience. Users can easily search for books based on various parameters like title, author, genre, publication date. You can also fetch the books based on the ratings given by the different users.
