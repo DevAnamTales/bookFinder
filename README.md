@@ -73,7 +73,8 @@ with status code "200 Ok".
 ```
 ## Structure of API response:
 Here is the simple API response structure:
-`.
+```http
+
 [
     {
         "_id": "6623f502d9131701a18e3a9f",
@@ -84,6 +85,7 @@ Here is the simple API response structure:
         "__v": 0
     }
 ]
+```
 The response from the´/books´ endpoint will contain an array of book objects with the above given structure.
 
 
