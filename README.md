@@ -75,16 +75,21 @@ with status code "200 Ok".
 Here is the simple API response structure:
 ```http
 
-[
-    {
-        "_id": "6623f502d9131701a18e3a9f",
-        "title": "peccatus",
-        "author": "6623f502d9131701a18e3a9b",
-        "genre": "Hip Hop",
-        "publicationDate": "2024-03-12T19:21:38.781Z",
-        "__v": 0
-    }
-]
+   {
+            "_id": "66278f38333707d8be65dcd8",
+            "title": "fugit solum adipiscor",
+            "author": "66278f36333707d8be65dc11",
+            "genre": "Reggae",
+            "publicationDate": "2023-05-14T13:39:28.291Z",
+            "ratings": [
+                {
+                    "user": "66278f38333707d8be65dc97",
+                    "rating": 4,
+                    "_id": "66278f38333707d8be65dcd9"
+                }
+            ],
+            "__v": 0
+        },
 ```
 The response from the´/books´ endpoint will contain an array of book objects with the above given structure.
 
