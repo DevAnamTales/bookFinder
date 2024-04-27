@@ -3,7 +3,7 @@
 - Clone project and Install all the dependencies
 Clone the repository, in the terminal run the following command
 
-```http
+```js
 npm install
 ```
 - Generate test data
