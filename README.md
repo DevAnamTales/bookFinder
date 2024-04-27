@@ -9,7 +9,7 @@ npm install
 - Generate test data
   To create a test data run a generateTestData script with following command
   
-```http
+```js
 node generateTestData.js
 ```
 ```
@@ -61,7 +61,7 @@ The base URL for BOOK Finder API is http://localhost:3000.
 
 ### Get book
 
-```http
+```js
 GET/api/books?title=Newyork
 
  In this exemple the title is set to Newyork. So we can get response with specific title which we have given. Note that we dont need api-key for get requests.´´´
