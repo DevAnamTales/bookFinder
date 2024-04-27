@@ -69,21 +69,21 @@ GET/api/books?title=Newyork
 
  ## Post book
 
-```http
+```js
 POST/api/books
 
 In this exemple we gonna create a new book using POST method and for this method we need api-key and we need to set everything in Body.For this request we will get response with status code "201 Created".
 ```
 ### Put book
 
-```http
+```js
 PUT/api/books/Hemligt
 
 In this exemple we are going to update user ratings for an existing book named "Hemligt". So we hit this endpoint which is given above. For this request we need api-key and we need to set new desired ratings in Body. We will get response "200 Ok" with our updated user ratings.
 ```
 ### DELETE book
 
-```http
+```js
 DELETE/api/books?title=Newyork
 
 In this exemple we are deleting a book by giving specific book name i.e "Newyork". We will get following response:
@@ -94,8 +94,7 @@ with status code "200 Ok".
 ```
 ## Structure of API response:
 Here is the simple API response structure:
-```http
-
+```json
    {
             "_id": "66278f38333707d8be65dcd8",
             "title": "fugit solum adipiscor",
