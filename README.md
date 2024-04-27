@@ -22,7 +22,7 @@ If you enter 50 in above example, it will create 50 users, authers and books in 
 - Run the server
   
   Run the server with following command
-  ```js
+```js
 node server.js
 ```
 
