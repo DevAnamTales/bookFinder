@@ -57,13 +57,13 @@ The base URL for BOOK Finder API is http://localhost:3000.
 - `genre`: It contains which type of book category
 - `pageSize`: Result per page
   
-### ´/api/books/user/´
+### `api/books/user/`
 - ´userId´: Find all books rated by a specific user
 
-### api/users:
+### `api/users`:
 - `userId`: Get user by its ID.
 
-### api/authors:
+### `api/authors`:
 - `authorId`: Get author by its ID.
 
 
