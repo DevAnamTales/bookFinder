@@ -13,6 +13,7 @@ npm install
 ```js
 node generateTestData.js
 ```
+
 ```
 You will be prompt with a question:
 Enter the amount of test data (number): 50
