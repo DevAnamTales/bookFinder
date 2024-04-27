@@ -69,7 +69,7 @@ The base URL for BOOK Finder API is http://localhost:3000.
 
 ## Request Examples:
 
-### Get book
+### Get a book
 
 ```js
 GET/api/books?title=Newyork
@@ -77,21 +77,21 @@ GET/api/books?title=Newyork
  In this exemple the title is set to Newyork. So we can get response with specific title which we have given. Note that we dont need api-key for get requests.´´´
 ```
 
- ## Post book
+ ## Create a new book
 
 ```js
 POST/api/books
 
 In this exemple we gonna create a new book using POST method and for this method we need api-key and we need to set everything in Body.For this request we will get response with status code "201 Created".
 ```
-### Put book
+### Update an existing book
 
 ```js
 PUT/api/books/Hemligt
 
 In this exemple we are going to update user ratings for an existing book named "Hemligt". So we hit this endpoint which is given above. For this request we need api-key and we need to set new desired ratings in Body. We will get response "200 Ok" with our updated user ratings.
 ```
-### DELETE book
+### DELETE a book
 
 ```js
 DELETE/api/books?title=Newyork
