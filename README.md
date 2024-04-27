@@ -1,4 +1,4 @@
-'#' API documentation
+# API documentation
 
 ## Project Setup:
 - Clone project and Install all the dependencies
