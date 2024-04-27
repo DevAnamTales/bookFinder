@@ -22,12 +22,11 @@ If you enter 50 in above example, it will create 50 users, authers and books in 
 - Run the server
   
   Run the server with following command
-  
-´´´js
+  ```js
 node server.js
-´´´
+```
 
-- Test the API call in browser or importing postman collections. You mighe be need to change the data in the requets in order to see the response since the test data I am using in my postman resides on my local computer. Use your test data that you have created in API calls.
+- Test the API call in browser or importing postman collections. You might be need to change the data in the request in order to see the response since the test data I am using in my postman resides on my local computer. Use your test data that you have created in API calls.
 - 
 ## Overview:
 
