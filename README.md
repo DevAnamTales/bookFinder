@@ -12,9 +12,9 @@ npm install
 ```http
 node generateTestData.js
 ```
-´You will be prompt with question:
+You will be ´prompt´ with a question:
 Enter the amount of test data (number): 50
-If you enter 50 in above example, it will create 50 users, authers and books in the mongoDB with reference.´
+If you enter 50 in above example, it will create 50 users, authers and books in the mongoDB with reference.
 
 ## Overview:
 
@@ -41,9 +41,12 @@ The base URL for BOOK Finder API is http://localhost:3000.
 
  ### `api/books`
 - `booksId`: The name of the book.
-- `authorId` : Writer name of that book.
-- `genre`: It contains which type of book is this.
-
+- `authorId` : Author id.
+- `genre`: It contains which type of book category
+- `pageSize`: Result per page
+  
+### ´/api/books/user/´
+- ´userId´: Find all books rated by a specific user
 
 ### api/users:
 - `userId`: Get user by its ID.
@@ -52,7 +55,7 @@ The base URL for BOOK Finder API is http://localhost:3000.
 - `authorId`: Get author by its ID.
 
 
-## Request Example 1:
+## Request Examples:
 
 ### Get book
 
