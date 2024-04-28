@@ -57,7 +57,8 @@ The response from the´/books´ endpoint will contain an array of book objects w
 ```http
 GET/api/books?title=Newyork
 
-- In this exemple the title is set to Newyork. So we can get response with specific title which we have given. Note that we dont need api-key for get requests.
+In this exemple the title is set to Newyork. So we can get response with specific title which we have given. Note that we dont need api-key for get requests. 
+
 
  ### Post book
 

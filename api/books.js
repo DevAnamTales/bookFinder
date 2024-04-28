@@ -27,9 +27,8 @@ const limiter = rateLimit({
 });
 
 export default function books(server, mongoose) {
-  
   //Get book with title, genre or author id
-  
+
   server.get('/api/books', limiter, async (req, res) => {
     try {
       // Extract query parameters from the request and decode them
@@ -235,5 +234,5 @@ export default function books(server, mongoose) {
 
 
 
-  
+
 }

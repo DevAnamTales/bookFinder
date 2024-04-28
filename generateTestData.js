@@ -3,24 +3,24 @@ import { faker } from '@faker-js/faker';
 import Books from './model/Books.js'
 import Author from './model/Authors.js'
 import User from './model/Users.js'
-
-// Function to generate random date within a range
-const randomDate = (start, end) => {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-};
+import prompt from 'prompt-sync';
 
 // Function to generate test data
-const generateTestData = async () => {
+const generateTestData = async (dataset) => {
   try {
+    // Check if dataset is a valid number
+    if (isNaN(dataset) || dataset <= 0) {
+      throw new Error('Please enter a valid number for the dataset.');
+    }
     // Connect to MongoDB
     mongoose.connect("mongodb+srv://anamRehman:Ana43210@cluster0.4eza73e.mongodb.net/bookFinder")
 
     // Clear existing data
-    await Promise.all([Author.deleteMany(), User.deleteMany(), Books.deleteMany(), BookEmb.deleteMany()]);
+    //await Promise.all([Author.deleteMany(), User.deleteMany(), Books.deleteMany()]);
 
     // Generate Authors
     const authors = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < dataset; i++) {
       const author = new Author({
         firstname: faker.internet.userName(),
         lastname: faker.internet.userName()      });
@@ -32,7 +32,7 @@ const generateTestData = async () => {
     //Create users
 
     const users = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < dataset; i++) {
       const user = new User({
         firstname: faker.internet.userName(),
         lastname: faker.internet.userName()
@@ -45,7 +45,7 @@ const generateTestData = async () => {
 
     // Generate Books with Reference to Authors and Users
     const books = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < dataset; i++) {
       const author = authors[Math.floor(Math.random() * authors.length)];
       const user = users[Math.floor(Math.random() * users.length)];
 
@@ -71,6 +71,11 @@ const generateTestData = async () => {
     console.error('Error generating test data:', err);
   }
 };
+// Create prompt function
+const promptSync = prompt();
 
+// Ask user for dataset size
+const userInput = promptSync("Enter the amount of test data (number): ");
+const dataset = parseInt(userInput);
 // Generate test data
-generateTestData();
+generateTestData(dataset);
