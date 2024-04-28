@@ -2,27 +2,25 @@ import mongoose from "mongoose";
 import { faker } from '@faker-js/faker';
 import Books from './model/Books.js'
 import Author from './model/Authors.js'
-import BookEmb from './model/BookEmbeded.js'
 import User from './model/Users.js'
-
-
-// Function to generate random date within a range
-const randomDate = (start, end) => {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-};
+import prompt from 'prompt-sync';
 
 // Function to generate test data
-const generateTestData = async () => {
+const generateTestData = async (dataset) => {
   try {
+    // Check if dataset is a valid number
+    if (isNaN(dataset) || dataset <= 0) {
+      throw new Error('Please enter a valid number for the dataset.');
+    }
     // Connect to MongoDB
     mongoose.connect("mongodb+srv://anamRehman:Ana43210@cluster0.4eza73e.mongodb.net/bookFinder")
 
     // Clear existing data
-    //await Promise.all([Author.deleteMany(), User.deleteMany(), Books.deleteMany(), BookEmb.deleteMany()]);
+    //await Promise.all([Author.deleteMany(), User.deleteMany(), Books.deleteMany()]);
 
     // Generate Authors
     const authors = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < dataset; i++) {
       const author = new Author({
         firstname: faker.internet.userName(),
         lastname: faker.internet.userName()      });
@@ -34,7 +32,7 @@ const generateTestData = async () => {
     //Create users
 
     const users = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < dataset; i++) {
       const user = new User({
         firstname: faker.internet.userName(),
         lastname: faker.internet.userName()
@@ -45,46 +43,39 @@ const generateTestData = async () => {
       console.log(`New user - ${user.firstname} - has been created.`)
     }
 
-    // Generate Books with Reference
+    // Generate Books with Reference to Authors and Users
     const books = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < dataset; i++) {
+      const author = authors[Math.floor(Math.random() * authors.length)];
+      const user = users[Math.floor(Math.random() * users.length)];
+
       const book = new Books({
         title: faker.lorem.words(),
-        author: authors[Math.floor(Math.random() * authors.length)],
+        author: author._id, // Reference to an author
         genre: faker.music.genre(),
         publicationDate: faker.date.past(),
+        ratings: [
+          {
+            user: user._id, // Reference to a user
+            rating: faker.number.int({ min: 1, max: 5 })
+          }
+        ]
       });
       await book.save();
       books.push(book);
-      console.log(`New book - ${book.title} - has been created.`)
+      console.log(`New book - ${book.title} - has been created.`);
     }
-
-    // Generate Books with Embedding
-    const booksEmb = [];
-    for (let i = 0; i < 50; i++) {
-      const book = new BookEmb({
-        title: faker.lorem.words(),
-        author: {
-          _id: authors[Math.floor(Math.random() * authors.length)]._id,
-          name: faker.internet.userName()
-        },
-        genre: faker.music.genre(),
-        publicationDate: faker.date.past(),
-        ratings: [{
-          _id: users[Math.floor(Math.random() * users.length)]._id,
-          rating: faker.number.int({ min: 1, max: 5 })
-        }]
-      });
-      await book.save();
-      booksEmb.push(book);
-    }
-
     console.log('Test data generated successfully.');
     mongoose.connection.close();
   } catch (err) {
     console.error('Error generating test data:', err);
   }
 };
+// Create prompt function
+const promptSync = prompt();
 
+// Ask user for dataset size
+const userInput = promptSync("Enter the amount of test data (number): ");
+const dataset = parseInt(userInput);
 // Generate test data
-generateTestData();
+generateTestData(dataset);

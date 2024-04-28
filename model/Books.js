@@ -21,6 +21,18 @@ const bookSchema = new mongoose.Schema({
   },
   genre: String,
   publicationDate: Date,
+  ratings: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'users'
+      },
+      rating: {
+        type: Number,
+        min: 0,
+        max: 5
+      }
+    }
+  ]
 });
 
 // Create model

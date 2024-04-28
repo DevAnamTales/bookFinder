@@ -1,0 +1,1159 @@
+{
+	"info": {
+		"_postman_id": "52818754-fba0-4a59-b363-fe6cc2e7f859",
+		"name": "Book Finder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33841194"
+	},
+	"item": [
+		{
+			"name": "Manuel Tests",
+			"item": [
+				{
+					"name": "1. Get books, verify status code 200",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/books"
+					},
+					"response": []
+				},
+				{
+					"name": "2.Get books, Verify JSON/XML response",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/books"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Check API returns correct status code for invalid request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"author\": \"6623f502d9131701a18e3a9b\",\r\n  \"genre\": \"culture\",\r\n  \"publicationDate\": \"2022-04-19T00:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/books"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Find book with specific filter",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?title=Newyork",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "genre",
+									"value": "Nature",
+									"disabled": true
+								},
+								{
+									"key": "author",
+									"value": "6623f502d9131701a18e3a9b1",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "Newyork"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5-Api returns paginated result when a large number of record requested",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?pageSize=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.Check API handles non-English characters correctly",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?title=Öland",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Öland"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7/10. Test the API’s response when sending concurrent requests/performance testing",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?title=Sunrise",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Sunrise"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.Create a new book",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"title\": \"Midnight\",\r\n  \"author\": \"6623f502d9131701a18e3a9b\",\r\n  \"genre\": \"culture\",\r\n  \"publicationDate\": \"2022-04-19T00:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/books"
+					},
+					"response": []
+				},
+				{
+					"name": "8.Update an existing book with new title",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"title\": \"Test123\",\r\n  \"author\": \"6623f502d9131701a18e3a9b\",\r\n  \"genre\": \"culture\",\r\n  \"publicationDate\": \"2022-04-19T00:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/books/Midnight"
+					},
+					"response": []
+				},
+				{
+					"name": "8. Delete a book with title",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?title=Test123",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "genre",
+									"value": "Nature",
+									"disabled": true
+								},
+								{
+									"key": "author",
+									"value": "6623f502d9131701a18e3a9b1",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "Test123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9.Uppdate ratings for an existing book",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"title\": \"Hemligt\",\r\n  \"author\": \"66278f36333707d8be65dc27\",\r\n  \"genre\": \"culture\",\r\n  \"publicationDate\": \"2022-04-19T00:00:00.000Z\",\r\n   \"ratings\": [\r\n                {\r\n                    \"user\": \"66278f38333707d8be65dca1\",\r\n                    \"rating\": 4,\r\n                    \"_id\": \"66278f38333707d8be65dcd6\"\r\n                }\r\n            ],\r\n            \"__v\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/books/Hemligt"
+					},
+					"response": []
+				},
+				{
+					"name": "11.Check API's response when database is down",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?genre=fiction",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Sunrise",
+									"disabled": true
+								},
+								{
+									"key": "genre",
+									"value": "Nature",
+									"disabled": true
+								},
+								{
+									"key": "genre",
+									"value": "fiction"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12. Find book with invalid author id (Error handling)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?author=6623f502d9131701a18e3a9b1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Sunrise",
+									"disabled": true
+								},
+								{
+									"key": "genre",
+									"value": "Nature",
+									"disabled": true
+								},
+								{
+									"key": "author",
+									"value": "6623f502d9131701a18e3a9b1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "13.Verify API returns correct rate-limiting",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?title=Sunrise",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Sunrise"
+								},
+								{
+									"key": "genre",
+									"value": "Nature",
+									"disabled": true
+								},
+								{
+									"key": "author",
+									"value": "6623f502d9131701a18e3a9b1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Automated Tests",
+			"item": [
+				{
+					"name": "1.Validate API returns correct status code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/books"
+					},
+					"response": []
+				},
+				{
+					"name": "2.API returns expected data format in JSON/XML",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify Content-Type is JSON\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/api/books"
+					},
+					"response": []
+				},
+				{
+					"name": "3.Ensure API returns correct status code for an invalid request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 Bad Request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"author\": \"6623f502d9131701a18e3a9b\",\r\n  \"genre\": \"culture\",\r\n  \"publicationDate\": \"2022-04-19T00:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/books",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "api-key",
+									"value": "jhjastA545889askKlL-Key",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.Check if the API returns correct data with specific filter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response contains expected data\", function () {\r",
+									"    // Parse the response body as JSON\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    // Check if the response contains the expected data based on filters or search criteria\r",
+									"    // Example: Check if the response contains books with a specific genre\r",
+									"    jsonData.data.forEach(function(book) {\r",
+									"        pm.expect(book.genre).to.equal(\"fiction\");\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?genre=fiction",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "genre",
+									"value": "fiction"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.Check if API returns paginated result",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify paginated results\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Verify that data array is present in the response\r",
+									"    pm.expect(responseBody.data).to.be.an('array');\r",
+									"\r",
+									"    // Verify that metadata object is present in the response\r",
+									"    pm.expect(responseBody.metadata).to.exist;\r",
+									"\r",
+									"    const metadata = responseBody.metadata;\r",
+									"\r",
+									"    // Verify that totalCount, totalPages, currentPage, and pageSize are present\r",
+									"    pm.expect(metadata.totalCount).to.exist;\r",
+									"    pm.expect(metadata.totalPages).to.exist;\r",
+									"    pm.expect(metadata.currentPage).to.exist;\r",
+									"    pm.expect(metadata.pageSize).to.exist;\r",
+									"    pm.expect(metadata.pageSize).to.equal(10); // Change the value if your page size is different\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?pageSize=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.Using an automated tool check API handles special character",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify API handles special characters in input data\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200); // Assuming 200 is the success status code\r",
+									"\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Verify that the response contains the correct book title with special characters\r",
+									"    pm.expect(responseBody.data[0].title).to.equal(\"Östermalm-historia\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?title=Östermalm-historia",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Östermalm-historia"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7/10. Test the API’s response when sending concurrent requests/performance testing",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test script for sending concurrent requests to search books endpoint\r",
+									"pm.test(\"Search Books Concurrently\", function () {\r",
+									"    const searchTerms = ['fiction', 'mystery', 'thriller']; // Sample search terms\r",
+									"\r",
+									"    // Function to send concurrent requests\r",
+									"    function sendRequest(userData, searchTerm) {\r",
+									"        pm.sendRequest({\r",
+									"            url: pm.environment.get('baseUrl') + '/api/books',\r",
+									"            method: 'GET',\r",
+									"            headers: {\r",
+									"                'Content-Type': 'application/json',\r",
+									"            },\r",
+									"            params: {\r",
+									"                genre: searchTerm\r",
+									"            }\r",
+									"        }, function (err, res) {\r",
+									"            if (err) {\r",
+									"                console.error('Error:', err);\r",
+									"                return;\r",
+									"            }\r",
+									"            console.log('User', userData.name, 'searched for books with genre:', searchTerm);\r",
+									"            // Add assertions to verify the response as needed\r",
+									"        });\r",
+									"    }\r",
+									"\r",
+									"    // Access iteration data directly\r",
+									"    const iterationData = pm.iterationData;\r",
+									"\r",
+									"    // Check if iterationData is an object\r",
+									"    if (typeof iterationData === 'object') {\r",
+									"        // Iterate over object keys\r",
+									"        for (let key in iterationData) {\r",
+									"            const userData = iterationData[key];\r",
+									"            // Check if userData is an object\r",
+									"            if (typeof userData === 'object') {\r",
+									"                for (let searchTerm of searchTerms) {\r",
+									"                    sendRequest(userData, searchTerm);\r",
+									"                }\r",
+									"            }\r",
+									"        }\r",
+									"    } else {\r",
+									"        console.error('Iteration data is not in the expected format.');\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/api/books"
+					},
+					"response": []
+				},
+				{
+					"name": "8.Create a new book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"title\": \"Midnight\",\r\n  \"author\": \"6623f502d9131701a18e3a9b\",\r\n  \"genre\": \"culture\",\r\n  \"publicationDate\": \"2022-04-19T00:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/books"
+					},
+					"response": []
+				},
+				{
+					"name": "8.Write an automated test to check if the API correctly handles updates to existing records",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 to update a book\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"title\": \"Last Day\",\r\n  \"author\": \"6623f502d9131701a18e3a9b\",\r\n  \"genre\": \"culture\",\r\n  \"publicationDate\": \"2022-04-19T00:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/books/Midnight"
+					},
+					"response": []
+				},
+				{
+					"name": "8. Delete a book with title",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 to delete a book\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?title=Last Day",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Last Day"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9.Write an automated test to check if the API correctly handles updates to existing records",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify status code is 200 OK\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"const newGenre = pm.environment.get(\"new-genre\");\r",
+									"\r",
+									"// Verify response body contains updated data\r",
+									"pm.test(\"Response contains updated data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.genre).to.equal(newGenre);\r",
+									"    // Add assertions for other fields if needed\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"title\": \"Natt\",\r\n  \"author\": \"66278f36333707d8be65dc27\",\r\n  \"genre\": \"{{new-genre}}\",\r\n  \"publicationDate\": \"2022-04-19T00:00:00.000Z\",\r\n   \"ratings\": [\r\n                {\r\n                    \"user\": \"66278f38333707d8be65dca1\",\r\n                    \"rating\": 2,\r\n                    \"_id\": \"66278f38333707d8be65dcd6\"\r\n                }\r\n            ],\r\n            \"__v\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/books/Natt"
+					},
+					"response": []
+				},
+				{
+					"name": "11.Check API response when database is down",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check if MongoDB is disconnected\r",
+									"const mongodbDisconnected = pm.variables.get('mongodbDisconnected');\r",
+									"if (mongodbDisconnected) {\r",
+									"    // MongoDB is disconnected, expect error response\r",
+									"    pm.test(\"Expect error response\", function () {\r",
+									"        pm.response.to.be.error;\r",
+									"    });\r",
+									"} else {\r",
+									"    // MongoDB is not disconnected, expect success response\r",
+									"    pm.test(\"Expect success response\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Calculate initial request counter based on the current iteration count\r",
+									"const requestsPerIteration = 50; // Assuming 50 requests per iteration\r",
+									"pm.environment.set('requestCounter', (pm.info.iteration - 1) * requestsPerIteration);\r",
+									"\r",
+									"// Check if it's time to disconnect MongoDB (e.g., after 20 calls)\r",
+									"if (pm.environment.get('requestCounter') % 20 === 0 && pm.environment.get('requestCounter') !== 0) {\r",
+									"    console.log('Disconnecting MongoDB...');\r",
+									"    pm.sendRequest({\r",
+									"        url: pm.environment.get('baseUrl') + pm.environment.get('disconnectEndpoint'),\r",
+									"        method: 'GET'\r",
+									"    }, function (err, res) {\r",
+									"        if (err) {\r",
+									"            console.error('Error disconnecting MongoDB:', err);\r",
+									"            return;\r",
+									"        }\r",
+									"        console.log('MongoDB disconnected');\r",
+									"        pm.environment.set('mongodbDisconnected', true);\r",
+									"    });\r",
+									"} else {\r",
+									"    // Increment request counter\r",
+									"    const requestCounter = pm.environment.get('requestCounter') || 0;\r",
+									"    pm.environment.set('requestCounter', parseInt(requestCounter) + 1);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?genre=fiction",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "genre",
+									"value": "fiction"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12. Error handling",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"        // Assert that the response status code is 400 (Bad Request)\r",
+									"pm.test(\"Response Status Code\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"        });\r",
+									"        // Assert that the response body contains the appropriate error message\r",
+									"        pm.test(\"Response Body\", function () {\r",
+									"            pm.expect(pm.response.json()).to.eql({ \"message\": \"books validation failed: title: Path `title` is required.\" });\r",
+									"        });\r",
+									"    \r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "jhjastA545889askKlL-Key",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"author\": \"66278f36333707d8be65dc2b\",\r\n    \"genre\": \"Nature\",\r\n    \"publicationDate\": \"2024-03-05T03:26:02.525Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/api/books"
+					},
+					"response": []
+				},
+				{
+					"name": "13.Verify API returns correct rate-limiting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Define the number of requests to send\r",
+									"const numRequests = 105;\r",
+									"\r",
+									"// Define the interval between requests (in milliseconds)\r",
+									"const intervalMs = 10;\r",
+									"\r",
+									"// Array to store the response status codes\r",
+									"let statusCodes = [];\r",
+									"\r",
+									"// Counter to track completed requests\r",
+									"let completedRequests = 0;\r",
+									"\r",
+									"// Function to send a request\r",
+									"function sendRequest() {\r",
+									"    pm.sendRequest({\r",
+									"        url: pm.environment.get(\"baseUrl\") + \"/api/books?title=Newyork\",\r",
+									"        method: \"GET\",\r",
+									"    }, function (err, res) {\r",
+									"        console.log(\"Received response:\", res.code);\r",
+									"        statusCodes.push(res.code);\r",
+									"        completedRequests++;\r",
+									"\r",
+									"        // Stop sending requests if a 429 response is received or all requests are completed\r",
+									"        if (res.code === 429 || completedRequests === numRequests) {\r",
+									"            console.log(\"Rate limit exceeded or all requests completed. Stopping further requests.\");\r",
+									"            clearInterval(intervalId);\r",
+									"            // Call the assertion function after all requests are completed\r",
+									"            assertRateLimiting();\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// Loop to send multiple requests\r",
+									"let intervalId = setInterval(sendRequest, intervalMs);\r",
+									"\r",
+									"// Assertion function to be called after all requests are completed\r",
+									"function assertRateLimiting() {\r",
+									"    // Assertion to check if any requests received a \"Too Many Requests\" response\r",
+									"    const tooManyRequests = statusCodes.some(code => code === 429);\r",
+									"    console.log(\"Too many requests:\", tooManyRequests);\r",
+									"    pm.test(\"Rate Limiting Test\", function () {\r",
+									"        pm.expect(tooManyRequests).to.be.true;\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?title=Newyork",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Newyork"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

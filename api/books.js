@@ -1,4 +1,6 @@
 import Books from "../model/Books.js";
+import rateLimit from "express-rate-limit"
+
 
 const verifyApiKey = (req, res, next) => {
   const apiKey = req.headers['api-key'];
@@ -17,28 +19,65 @@ const verifyApiKey = (req, res, next) => {
   next();
 };
 
+// Apply rate limiting middleware for /api/books endpoint
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 100, // Max requests per minute
+  message: 'Too many requests, please try again later.'
+});
+
 export default function books(server, mongoose) {
+  //Get book with title, genre or author id
 
-  //server.use('/api/books', verifyApiKey);
-
-  server.get('/api/books', async (req, res) => {
+  server.get('/api/books', limiter, async (req, res) => {
     try {
-      // Parse query parameters for pagination
-      const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
-      const pageSize = parseInt(req.query.pageSize) || 10; // Default page size to 10 if not provided
+      // Extract query parameters from the request and decode them
+      const { title, genre, author, page, pageSize } = req.query;
+      console.log("Query Parameters:", req.query);
 
-      // Calculate skip and limit values for MongoDB query
-      const skip = (page - 1) * pageSize;
-      const limit = pageSize;
+      const decodedTitle = title ? decodeURIComponent(title) : null;
+      const decodedGenre = genre ? decodeURIComponent(genre) : null;
+      const decodedAuthor = author ? decodeURIComponent(author) : null;
 
-      // Fetch paginated data from the database
-      const books = await Books.find().skip(skip).limit(limit);
+      // Parse page and pageSize parameters to integers
+      const pageNumber = parseInt(page) || 1;
+      const size = parseInt(pageSize) || 10;
 
-      // Count total number of documents in the collection (for pagination metadata)
-      const totalCount = await Books.countDocuments();
+      // Calculate skip value based on page number and page size
+      const skip = (pageNumber - 1) * size;
 
-      // Calculate total number of pages
-      const totalPages = Math.ceil(totalCount / pageSize);
+      // Construct the query object based on the decoded parameters
+      const query = {};
+
+      if (decodedTitle) {
+        query.title = decodedTitle;
+      }
+
+      if (decodedGenre) {
+        query.genre = decodedGenre;
+      }
+
+      if (decodedAuthor) {
+        // Check if the provided author ID is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(decodedAuthor)) {
+          // If the author ID is invalid, return a 400 response with a custom error message
+          return res.status(400).json({ error: "Invalid author ID: Please enter a valid ObjectId for the author." });
+        }
+        query.author = decodedAuthor;
+      }
+      console.log("Constructed Query:", query);
+
+      // Search for books in the database using the constructed query with pagination
+      const books = await Books.find(query).skip(skip).limit(size);
+
+      // If no books are found, return a 404 response
+      if (!books.length) {
+        return res.status(404).json({ error: "No books found" });
+      }
+
+      // If books are found, return them in the response along with pagination metadata
+      const totalCount = await Books.countDocuments(query);
+      const totalPages = Math.ceil(totalCount / size);
 
       // Construct response object with paginated data and metadata
       const response = {
@@ -46,47 +85,12 @@ export default function books(server, mongoose) {
         metadata: {
           totalCount,
           totalPages,
-          currentPage: page,
-          pageSize
+          currentPage: pageNumber,
+          pageSize: size
         }
       };
 
-      // Send the response back to the client
       res.json(response);
-    } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  });
-
-// Get book by title
-  server.get('/api/books/title/:bookTitle', async (req, res) => {
-    try {
-      // Get the book title parameter from the request
-      const encodedTitle = req.params.bookTitle;
-
-      // Decode the encoded title using decodeURIComponent
-      const decodedTitle = decodeURIComponent(encodedTitle);
-
-      console.log("Encoded Title:", encodedTitle);
-      console.log("Decoded Title:", decodedTitle);
-
-      // Check if the decoded title is empty or whitespace
-      if (!decodedTitle || decodedTitle.trim() === '') {
-        return res.status(400).json({ error: "Bad Request: Book title is required" });
-      }
-
-      // Search for the book in the database using the decoded title
-      const book = await Books.findOne({ title: decodedTitle });
-
-      console.log("Found Book:", book);
-
-      // If the book is not found, return a 404 response
-      if (!book) {
-        return res.status(404).json({ error: "Book not found" });
-      }
-
-      // If the book is found, return it in the response
-      res.json(book);
     } catch (error) {
       // If an error occurs during the process, return a 500 response
       console.error("Error:", error);
@@ -96,7 +100,7 @@ export default function books(server, mongoose) {
 
 
   // Create a New Book
-  server.post('/books', verifyApiKey, async (req, res) => {
+  server.post('/api/books', verifyApiKey, async (req, res) => {
     try {
       // Extract the author object from the request body
       const { author, ...bookData } = req.body;
@@ -137,11 +141,98 @@ export default function books(server, mongoose) {
     }
   });
 
+  // PUT method to update a book by title
+  server.put('/api/books/:title', async (req, res) => {
+    const title = req.params.title;
+    const updateData = req.body;
+
+    try {
+      // Validate the update data (optional, based on your application's requirements)
+      if (!updateData || Object.keys(updateData).length === 0) {
+        return res.status(400).json({ error: 'Bad Request: Update data is required' });
+      }
+
+      // Find the book by title and update it with the new data
+      const updatedBook = await Books.findOneAndUpdate({ title: title }, updateData, { new: true });
+
+      if (!updatedBook) {
+        // If the book with the given title is not found, return a 404 error
+        return res.status(404).json({ error: 'Book not found' });
+      }
+
+      // If the book is successfully updated, return the updated book
+      return res.json(updatedBook);
+    } catch (error) {
+      // If an error occurs, return a 500 error
+      console.error(error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
+
+  //Delete a book
+  server.delete('/api/books', verifyApiKey, async (req, res) => {
+    try {
+      // Extract the book title from the query parameters
+      const title = req.query.title;
+
+      // Check if the title parameter is missing or empty
+      if (!title || title.trim() === '') {
+        return res.status(400).json({ error: "Bad Request: Book title is required in the query parameters" });
+      }
+
+      // Search for the book in the database using the provided title
+      const book = await Books.findOne({ title });
+
+      // If the book is not found, return a 404 response
+      if (!book) {
+        return res.status(404).json({ error: "Book not found" });
+      }
+
+      // Log the book deletion
+      console.log(`Deleting book with title: ${title}`);
+
+      // Delete the book from the database
+      await Books.deleteOne({ title });
+
+      // Return a success message in the response
+      res.json({ message: "Book deleted successfully" });
+    } catch (error) {
+      // Log any errors that occur during the process
+      console.error("Error deleting book:", error);
+
+      // Return a 500 response with an error message
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
+  //Find a specific book rated by a specific user
+
+  server.get('/api/books/user/:userId', async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      console.log("User ID:", userId);
+
+      // Find books where the ratings array contains a rating by the specified user
+      const books = await Books.find({ 'ratings.user': userId });
+      console.log("Books:", books);
+
+      if (!books || books.length === 0) {
+        return res.status(404).json({ error: "No books rated by this user found" });
+      }
+
+      res.json(books);
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
 
 
 
 
 
 
-  
+
+
 }
